@@ -19,6 +19,7 @@ type DBConnectionInterface interface {
 	SavePost(models.Post)
 	GetAllPosts() []models.Post
 	GetPostByID(int) models.Post
+	DeletePostByID(id int)
 }
 
 func NewDBConnectionInterface() DBConnectionInterface {

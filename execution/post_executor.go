@@ -16,6 +16,7 @@ type PostExecutorInterface interface {
 	SaveNewPost(string, string) models.Post
 	GetAllPosts() []models.Post
 	GetPostByID(string) models.Post
+	DeletePostByID(string)
 }
 
 func NewPostExecutorInterface(db database.DBConnectionInterface) PostExecutorInterface {
@@ -47,6 +48,14 @@ func (pe *postExecutor) GetPostByID(id string) models.Post {
 	}
 	result := pe.db.GetPostByID(idInt)
 	return result
+}
+
+func (pe *postExecutor) DeletePostByID(id string) {
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	pe.db.DeletePostByID(idInt)
 }
 
 func validatePost(author, content string) error {

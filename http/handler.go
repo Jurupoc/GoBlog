@@ -23,6 +23,7 @@ func (h Handler) Server() {
 	http.HandleFunc(SavePostPath, h.handlerSavePost)
 	http.HandleFunc(GetPostByIdPath, h.handlerGetPostByID)
 	http.HandleFunc(GetAllPostsPath, h.handlerGetAllPosts)
+	http.HandleFunc(DeletePostByIdPath, h.handlerDeletePostByID)
 
 	if err := http.ListenAndServe(":8080", nil); err != http.ErrServerClosed {
 		panic(err)

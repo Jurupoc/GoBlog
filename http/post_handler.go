@@ -53,3 +53,12 @@ func (h Handler) handlerGetPostByID(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
 	w.Write(response)
 }
+
+func (h Handler) handlerDeletePostByID(w http.ResponseWriter, req *http.Request) {
+	defer req.Body.Close()
+
+	id := strings.TrimPrefix(req.URL.Path, DeletePostByIdPath)
+	h.execution.DeletePostByID(id)
+
+	w.WriteHeader(http.StatusOK)
+}

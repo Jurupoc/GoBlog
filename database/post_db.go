@@ -8,20 +8,21 @@ import (
 )
 
 var (
-	INSERT_POST_QUERY    string = `INSERT INTO posts(author, content, createdAt) VALUES(?, ?, ?)`
-	GET_ALL_POSTS_QUERY  string = `SELECT * FROM posts LIMIT 50`
-	GET_POST_BY_ID_QUERY string = `SELECT * FROM posts WHERE id = ?`
+	InsertPostQuery     string = `INSERT INTO posts(author, content, createdAt) VALUES(?, ?, ?)`
+	GetAllPostsQuery    string = `SELECT * FROM posts LIMIT 50`
+	GetPostByIDQuery    string = `SELECT * FROM posts WHERE id = ?`
+	DeletePostByIDQuery string = `DELETE FROM posts WHERE id = ?`
 )
 
 func (db *DBConnection) SavePost(post models.Post) {
-	_, err := db.dbConn.Exec(INSERT_POST_QUERY, post.Author, post.Content, post.CreateAt)
+	_, err := db.dbConn.Exec(InsertPostQuery, post.Author, post.Content, post.CreateAt)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
 func (db *DBConnection) GetAllPosts() []models.Post {
-	rows, err := db.dbConn.Query(GET_ALL_POSTS_QUERY)
+	rows, err := db.dbConn.Query(GetAllPostsQuery)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -44,7 +45,7 @@ func (db *DBConnection) GetAllPosts() []models.Post {
 }
 
 func (db *DBConnection) GetPostByID(id int) models.Post {
-	row, err := db.dbConn.Query(GET_POST_BY_ID_QUERY, id)
+	row, err := db.dbConn.Query(GetPostByIDQuery, id)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -57,4 +58,11 @@ func (db *DBConnection) GetPostByID(id int) models.Post {
 	row.Scan(&result.Id, &result.Author, &result.Content, &result.CreateAt)
 
 	return result
+}
+
+func (db *DBConnection) DeletePostByID(id int) {
+	_, err := db.dbConn.Exec(DeletePostByIDQuery, id)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }

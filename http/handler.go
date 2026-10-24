@@ -19,10 +19,10 @@ func NewHandlerInterface(execution execution.PostExecutorInterface) HandlerInter
 }
 
 func (h Handler) Server() {
-	http.HandleFunc("/", h.handlerDefault)
-	http.HandleFunc("/post", h.handlerSavePost)
-	http.HandleFunc("/get-post/", h.handlerGetPostByID)
-	http.HandleFunc("/get-posts", h.handlerGetAllPosts)
+	http.HandleFunc(DefaultPath, h.handlerDefault)
+	http.HandleFunc(SavePostPath, h.handlerSavePost)
+	http.HandleFunc(GetPostByIdPath, h.handlerGetPostByID)
+	http.HandleFunc(GetAllPostsPath, h.handlerGetAllPosts)
 
 	if err := http.ListenAndServe(":8080", nil); err != http.ErrServerClosed {
 		panic(err)

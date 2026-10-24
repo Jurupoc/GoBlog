@@ -30,19 +30,26 @@ func (h Handler) handlerSavePost(w http.ResponseWriter, req *http.Request) {
 
 func (h Handler) handlerGetAllPosts(w http.ResponseWriter, _ *http.Request) {
 	posts := h.execution.GetAllPosts()
-	for _, post := range posts {
-		log.Printf("id: %d | author: %s | content: %s | createdAt: %s", post.Id, post.Author, post.Content, post.CreateAt.String())
+	response, err := json.Marshal(posts)
+	if err != nil {
+		 log.Fatal(err.Error())
 	}
+	
 	w.WriteHeader(http.StatusAccepted)
+	w.Write(response)
 }
 
 func (h Handler) handlerGetPostByID(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 
-	id := strings.TrimPrefix(req.URL.Path, "/get-post/")
+	id := strings.TrimPrefix(req.URL.Path, GetPostByIdPath)
 	post := h.execution.GetPostByID(id)
-	
-	log.Printf("id: %d | author: %s | content: %s | createdAt: %s", post.Id, post.Author, post.Content, post.CreateAt.String())
+
+	response, err := json.Marshal(post)
+	if err != nil {
+		 log.Fatal(err.Error())
+	}
 
 	w.WriteHeader(http.StatusAccepted)
+	w.Write(response)
 }
